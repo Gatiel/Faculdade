@@ -1,0 +1,153 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+typedef struct bloco{
+	int valor;
+	struct bloco *ant, *prox;
+}Bloco;
+
+typedef struct {
+	Bloco *inicio, *fim;
+}ListaDupla;
+
+int inserir(ListaDupla *l, int valor);
+int removerPosicao(ListaDupla *l, int posicao);
+void imprimeLista(ListaDupla l);
+
+int main() {
+	ListaDupla lista;   //ListaDupla é o apelido para a struct.
+	lista.inicio = lista.fim = NULL;    //inicializa o inicio e fim como NULL.
+
+	//testes
+	if(inserir(&lista, 5) == 1) printf("%d inserido com sucesso!\n", lista.inicio->valor);
+	if(inserir(&lista, 4) == 1) printf("%d inserido com sucesso!\n", lista.inicio->valor);
+	if(inserir(&lista, 8) == 1) printf("%d inserido com sucesso!\n", lista.fim->valor);
+	if(inserir(&lista, 6) == 1) printf("%d inserido com sucesso!\n", lista.fim->ant->valor);
+	if(inserir(&lista, 8) == 1) printf("%d inserido com sucesso!\n", lista.fim->valor);
+	if(inserir(&lista, 2) == 1) printf("%d inserido com sucesso!\n", lista.inicio->prox->valor);
+/*
+	if(removerPosicao(&lista, 0) == 1)
+		printf("primeira posicao removida com sucesso!\n");
+	imprimeLista(lista);
+
+	if(removerPosicao(&lista, 4) == 1)
+		printf("ultima prosicao removida com sucesso!\n");
+	imprimeLista(lista);
+
+//	if(removerPosicao(&lista, 3) == 1)
+//		printf("removido com sucesso!\n");
+//	imprimeLista(lista);
+//
+//	if(removerPosicao(&lista, 5) == 1)
+//		printf("removido com sucesso!\n");
+//	imprimeLista(lista);
+*/
+	return 0;
+}
+
+//--- funções auxiliares
+Bloco * alocaBloco(int valor) {
+	Bloco *aux;
+	aux = (Bloco*)malloc(sizeof(Bloco));
+	if(!aux) return NULL;   //se aux == NULL return NULL
+	aux->valor = valor;
+	aux->prox = aux->ant = NULL;    //ant e prox do novo bloco vira NULL
+	return aux; // retorna o Bloco para a variável que chamou a função
+}
+
+//vamos evitar ao maximo código boilerplate
+int inserir(ListaDupla *l, int valor) {
+
+    // aux é o novo bloco
+	Bloco *aux = alocaBloco(valor); //Chama a função para alocar bloco em aux e insereve valor no aux->valor
+	if(!aux) return 0;  //se aux for NULL retorna null
+
+	if(!l->inicio) l->inicio = l->fim = aux;
+	// se o INICIO DA PILHA for NULL, então faz o ponteiro inicio (l->inicio) e o ponteiro fim (l->fim) apontar para o novo Bloco
+
+
+	else if(valor <= l->inicio->valor) {
+        // se o valor novo for MANOR OU IGUAL VALOR DO INICIO DA PILHA
+
+		aux->prox = l->inicio;
+		//o prox do novo bloco vai apontar pro bloco que está no inicio da pilha(lista)
+
+		l->inicio->ant = aux;
+		//o ant do inicio da pilha(do valor maior) vai apontar para novo bloco(aux)(valor menor ou igual)
+
+		l->inicio = aux;
+		// o inicio(valor maior) vai apontar para o novo bloco (tornando-o primeiro da lista)
+	}
+
+
+	else if(valor >= l->fim->valor){
+        //se valor for maior ou igual ao valor do FIM DA PILHA
+
+		l->fim->prox = aux;
+		//faz o PROX do ultimo bloco da lista apontar para o novo bloco
+
+		aux->ant = l->fim;
+		//o ant do novo bloco aponta para o ultimo bloco da lista
+
+		l->fim = aux;
+		//o ultimo bloco da lista vira o novo bloco
+
+	}
+	else{   //se for no meio
+		Bloco *perc = l->inicio;
+        //cria um bloco perc apontando no inicio da lista (igual o l->inicio, mas não substitui)
+
+
+		//perc é o bloco seguinte do aux(aux é o novo bloco)
+		while(perc->valor < valor) perc = perc->prox;
+		//enquanto o valor que vai percorrer toda a lista (começando pela lista inicio) for menor que novo valor
+		//perc percorre os blocos atraves de prox em prox(já que perc inicio apontado para o inicio da lista)
+
+		aux->prox = perc;
+		//prox do novo bloco aponta para o proximo bloco antes de ser maior (se iguala ao perc)
+
+		aux->ant = perc->ant;
+		//(ant do perc aponta para o bloco do antigo anterior)
+		//ant do novo bloco se iguala ao ant antigo, perc
+
+		perc->ant = aux;
+		//ant do bloco seguinte aponta para o novo bloco
+
+        aux->ant->prox = aux;
+		//bloco anterior ao novo bloco vai apontar para prox pro novo bloco
+	}
+
+	return 1;
+}
+
+/*
+int removerPosicao(ListaDupla *l, int posicao){
+	Bloco *perc;
+
+	if(!l->inicio) return 0;
+	perc = l->inicio;
+
+	if(posicao == 0) {
+		if(l->inicio == l->fim) l->inicio = l->fim = NULL;
+		else {
+			l->inicio = perc->prox;
+			l->inicio->ant = NULL;
+			perc->prox = NULL;
+		}
+		free(perc);
+	}
+	else{
+		//dever de casa completar para passar nos testes!!!!
+	}
+
+	return 1;
+}
+
+void imprimeLista(ListaDupla l) {
+	Bloco *perc = l.inicio;
+	while(perc != NULL){
+		printf("%d ", perc->valor);
+		perc = perc->prox;
+	}
+}
+*/
