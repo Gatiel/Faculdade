@@ -1,0 +1,115 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct Bloco {
+  int valor;
+  struct Bloco *prox;
+} Bloco;  
+
+int insereOrdenado(Bloco **inicio, int valor) {
+  Bloco *aux, *temp;
+  if (*inicio == NULL) {
+    *inicio = (Bloco *)malloc(sizeof(Bloco));
+    if (*inicio == NULL)
+      return 0;
+    (*inicio)->valor = valor;
+    (*inicio)->prox = NULL;
+  } else if ((*inicio)->valor >= valor) {
+    aux = (Bloco *)malloc(sizeof(Bloco));
+    if (aux == NULL)
+      return 0;
+    aux->valor = valor;
+    aux->prox = *inicio;
+    *inicio = aux;
+  } else {
+    aux = (Bloco *)malloc(sizeof(Bloco));
+    if (aux == NULL)
+      return 0;
+    aux->valor = valor;
+    aux->prox = NULL;
+    if ((*inicio)->prox == NULL) {
+      (*inicio)->prox = aux; 
+    } else {
+      for (temp = *inicio; temp->prox != NULL && temp->prox->valor < valor;
+           temp = temp->prox)
+        ;
+      aux->prox = temp->prox;
+      temp->prox = aux;
+    }
+  }
+  return 1;
+}
+
+int remover(Bloco **inicio, int posicao) {
+  Bloco *aux, *aux2;
+  int count = -1, proc;
+
+  if (posicao < 0)
+    return 0;
+  for (aux = *inicio; aux != NULL; aux = aux->prox)
+    count++;
+  if (posicao > count)
+    return 0;
+  // se passou daqui, posicao valida
+
+  if (posicao == 0) {
+    aux = *inicio;
+    *inicio = (*inicio)->prox;
+    aux->prox = NULL;
+    free(aux);
+  } else if (posicao == count) {
+    aux = *inicio;
+
+    for (proc = 0; proc < posicao - 1; proc++)
+      ;
+    aux = aux->prox;
+
+    // parei na penultima posicao
+    free(aux->prox);
+    aux->prox = NULL;
+
+  } else {
+    aux = *inicio;
+    for (proc = 0; proc < posicao - 1; proc++) {
+      aux = aux->prox;
+    }
+    aux2 = aux->prox;
+    aux->prox = aux2->prox;
+    aux2->prox = NULL;
+    free(aux2);
+  }
+  return 1;
+}
+
+int tamanho(Bloco *inicio) {
+  int count = 0;
+  while (inicio != NULL) {
+    count++;
+    inicio = inicio->prox;
+  }
+  return count;
+}
+
+int busca(Bloco *inicio, int valor) {
+  while (inicio != NULL) {
+    if (inicio->valor == valor) {
+      return 1;  
+    }
+    inicio = inicio->prox;
+  }
+  return 0;
+}
+
+int main() {
+  Bloco *inicio = NULL;
+
+  insereOrdenado(&inicio, 5);
+  insereOrdenado(&inicio, 2);
+  insereOrdenado(&inicio, 4);
+  insereOrdenado(&inicio, 1);
+  insereOrdenado(&inicio, 6);
+
+  remover(&inicio, 2);
+  tamanho(inicio);
+  busca(inicio, 2);
+};
