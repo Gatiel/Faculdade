@@ -1,0 +1,54 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct Bloco {
+  int valor;
+  struct Bloco *prox;
+} Bloco;
+
+typedef struct Pilha {
+  Bloco *inicio;
+  Bloco *fim;
+} Pilha;
+
+int push(Pilha *p, int valor) {
+  Bloco *aux;
+  aux = (Bloco *)malloc(sizeof(Bloco));
+  if (aux == NULL)
+    return 0;
+  aux->valor = valor;
+  aux->prox = NULL;
+  if (p->inicio == NULL) {
+    p->inicio = p->fim = aux;
+  } else {
+    aux->prox = p->inicio;
+    p->inicio = aux;
+  }
+  return 1;
+}
+
+int pop(Pilha *p) {
+  Bloco *aux;
+  if (p->inicio != p->fim) {
+    aux = p->inicio;
+    p->inicio = aux->prox;
+    aux->prox = NULL;
+    free(aux);
+  } else if (p->inicio != NULL) {
+    free(p->inicio);
+    p->inicio = p->fim = NULL;
+  }
+  return 1;
+}
+
+int main() {
+  Pilha p;
+  p.inicio = p.fim = NULL;
+  push(&p, 5);
+  push(&p, 8);
+  push(&p, 3);
+
+  pop(&p);
+  pop(&p);
+  pop(&p);
+}
