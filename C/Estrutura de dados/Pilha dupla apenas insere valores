@@ -11,8 +11,6 @@ typedef struct {
 }ListaDupla;
 
 int inserir(ListaDupla *l, int valor);
-int removerPosicao(ListaDupla *l, int posicao);
-void imprimeLista(ListaDupla l);
 
 int main() {
 	ListaDupla lista;   //ListaDupla é o apelido para a struct.
@@ -25,23 +23,7 @@ int main() {
 	if(inserir(&lista, 6) == 1) printf("%d inserido com sucesso!\n", lista.fim->ant->valor);
 	if(inserir(&lista, 8) == 1) printf("%d inserido com sucesso!\n", lista.fim->valor);
 	if(inserir(&lista, 2) == 1) printf("%d inserido com sucesso!\n", lista.inicio->prox->valor);
-/*
-	if(removerPosicao(&lista, 0) == 1)
-		printf("primeira posicao removida com sucesso!\n");
-	imprimeLista(lista);
 
-	if(removerPosicao(&lista, 4) == 1)
-		printf("ultima prosicao removida com sucesso!\n");
-	imprimeLista(lista);
-
-//	if(removerPosicao(&lista, 3) == 1)
-//		printf("removido com sucesso!\n");
-//	imprimeLista(lista);
-//
-//	if(removerPosicao(&lista, 5) == 1)
-//		printf("removido com sucesso!\n");
-//	imprimeLista(lista);
-*/
 	return 0;
 }
 
@@ -119,35 +101,3 @@ int inserir(ListaDupla *l, int valor) {
 
 	return 1;
 }
-
-/*
-int removerPosicao(ListaDupla *l, int posicao){
-	Bloco *perc;
-
-	if(!l->inicio) return 0;
-	perc = l->inicio;
-
-	if(posicao == 0) {
-		if(l->inicio == l->fim) l->inicio = l->fim = NULL;
-		else {
-			l->inicio = perc->prox;
-			l->inicio->ant = NULL;
-			perc->prox = NULL;
-		}
-		free(perc);
-	}
-	else{
-		//dever de casa completar para passar nos testes!!!!
-	}
-
-	return 1;
-}
-
-void imprimeLista(ListaDupla l) {
-	Bloco *perc = l.inicio;
-	while(perc != NULL){
-		printf("%d ", perc->valor);
-		perc = perc->prox;
-	}
-}
-*/
