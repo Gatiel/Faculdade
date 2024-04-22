@@ -54,12 +54,12 @@ IndiceNome* criar_indice_nome (char letra, Pessoa * pessoa)
   return novo_indice;
 }
 
-//ListaPessoas é a pilha inicial
+//ListaPessoas Ã© a pilha inicial
 void adicionar_pessoa (ListaPessoas * lista, Pessoa * pessoa)
 {
 IndiceNome* perc = lista->inicio;
 
-  if (lista->inicio == NULL)  //se não tiver letra, cria
+  if (lista->inicio == NULL)  //se nÃ£o tiver letra, cria
 	 {
 		lista->inicio = criar_indice_nome (pessoa->firstname[0], pessoa);
 		lista->fim = lista->inicio;
@@ -71,7 +71,7 @@ IndiceNome* perc = lista->inicio;
 
    	 //else para percorrer a letra aprocurando letra igual
    	 while(perc->letra != pessoa->firstname[0] && perc->proximo != NULL) perc = perc->proximo;
-   	 // perc está na letra / está no caso de não ter a letra correta
+   	 // perc estÃ¡ na letra / estÃ¡ no caso de nÃ£o ter a letra correta
       	 if(perc->letra != pessoa->firstname[0]){
       	      perc->proximo = criar_indice_nome (pessoa->firstname[0], pessoa);
       	      perc->proximo->nomes = (ListaNomes *) malloc (sizeof (ListaNomes));
@@ -80,7 +80,7 @@ IndiceNome* perc = lista->inicio;
    		      perc->proximo->nomes->prox = NULL;
    		      lista->fim = perc->proximo;
       	   } else if(perc->letra == pessoa->firstname[0]){
-      	      //se perc letra for exatamente igual a primeira letra tem 2 casos, ou nome é igual ou apenas ainicial é igual
+      	      //se perc letra for exatamente igual a primeira letra tem 2 casos, ou nome Ã© igual ou apenas ainicial Ã© igual
 
       	      Pessoa* perc2 = perc->nomes->pessoa;
       	      while(perc2->prox != NULL) perc2 = perc2->prox;
@@ -143,7 +143,7 @@ int main ()
             printf("Digite com a primeira letra maiuscula: \n");
             scanf("%s", firstname);
         }
-        printf("Digite o Último Nome: \n");
+        printf("Digite o Ãšltimo Nome: \n");
         scanf("%s", lastname);
         while(lastname[0] < 65 || lastname[0] > 90 ){
             printf("Digite com a primeira letra maiuscula: \n");
@@ -162,7 +162,7 @@ int main ()
             printf("Digite com a primeira letra maiuscula: \n");
             scanf("%s", firstname);
         }
-      printf("Digite o último nome da pessoa buscada: \n");
+      printf("Digite o Ãºltimo nome da pessoa buscada: \n");
       scanf("%s", lastname);
       while(lastname[0] < 65 || lastname[0] > 90 ){
             printf("Digite com a primeira letra maiuscula: \n");
@@ -172,13 +172,13 @@ int main ()
       if (pessoabuscada != NULL) {
          printf("\nNome: %s\nSobrenome: %s\nCPF: %s\nIdade: %d\n\n", pessoabuscada->firstname, pessoabuscada->lastname, pessoabuscada->cpf,    pessoabuscada->idade);
          } else {
-         printf("Pessoa não encontrada.\n");
+         printf("Pessoa nÃ£o encontrada.\n");
                 }
          break;
       case 3:
          return 0;
       default:
-         printf("Opção inválida. Digite novamente.\n");
+         printf("OpÃ§Ã£o invÃ¡lida. Digite novamente.\n");
          break;
      }
   } while(n != 3 );
